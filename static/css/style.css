@@ -76,12 +76,7 @@ header {
     gap: 25px;
 }
 
-.project-card {
-    background: var(--sidebar-bg);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+
 
 /* Filters and Search */
 .filters-container {
@@ -184,8 +179,9 @@ header {
     background: var(--sidebar-bg);
     border-radius: 12px;
     border: 1px solid var(--border-color);
-    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     transition: transform 0.2s;
+    margin-bottom: 20px;
 }
 
 .project-card:hover {
@@ -251,15 +247,19 @@ header {
 
 /* Table Responsiveness */
 .table-responsive {
+    display: block;
     width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    margin-bottom: 10px; /* Space for scrollbar if needed */
 }
 
 .services-table {
     width: 100%;
+    min-width: 700px; /* Increased min-width to force scroll on small screens */
     border-collapse: collapse;
-    min-width: 600px; /* Ensure table doesn't squash too much */
+    margin: 0;
 }
 
 /* Tablets and Laptops */
