@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Port Control - DS Prime{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <aside>
+        <div class="logo">
+            <i class="fas fa-network-wired"></i>
+            <span>PortControl</span>
+        </div>
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}" class="nav-item active">
+                <i class="fas fa-columns"></i> Dashboard
+            </a>
+            <a href="/admin/" class="nav-item">
+                <i class="fas fa-cog"></i> Configurações
+            </a>
+        </nav>
+        <div class="nav-links" style="border-top: 1px solid var(--border-color);">
+            <div class="nav-item" style="font-size: 0.8rem; color: var(--text-secondary);">
+                v1.0.0 @ DS Prime
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+            <div class="user-info">
+                <span style="color: var(--text-secondary)">Bem-vindo, <strong>{{ user.username|default:"Admin" }}</strong></span>
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

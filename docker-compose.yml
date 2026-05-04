@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:15
+    container_name: port_control_db
+    environment:
+      POSTGRES_DB: control_port
+      POSTGRES_USER: ds_admin_51338b14
+      POSTGRES_PASSWORD: D7UJtaDrjE00FEZY-pErPGf9f827k-VLNHzOjuhMSGE
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8003:8000"
+    environment:
+      - DATABASE_URL=postgres://ds_admin_51338b14:D7UJtaDrjE00FEZY-pErPGf9f827k-VLNHzOjuhMSGE@db:5432/control_port
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
