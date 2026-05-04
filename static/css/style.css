@@ -83,83 +83,6 @@ header {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Better filters alignment */
-.filters-container {
-    background: rgba(255,255,255,0.02);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 30px;
-}
-
-.search-box input {
-    font-size: 1rem;
-}
-
-/* Tablets and Laptops */
-@media (max-width: 1200px) {
-    main {
-        padding: 30px;
-    }
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Small Tablets / Mobile Landscape */
-@media (max-width: 992px) {
-    :root {
-        --sidebar-width: 80px; /* Slim sidebar for tablets */
-    }
-    .nav-item span, .logo span {
-        display: none;
-    }
-    .nav-item {
-        justify-content: center;
-        padding: 15px;
-    }
-    .logo {
-        justify-content: center;
-    }
-}
-
-/* Mobile Devices */
-@media (max-width: 768px) {
-    :root {
-        --sidebar-width: 260px;
-    }
-    
-    main {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
-        padding-top: 80px;
-    }
-
-    header {
-        padding: 0 20px;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .filters-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .filter-chips {
-        overflow-x: auto;
-        padding-bottom: 10px;
-        justify-content: flex-start;
-    }
-
-    .filter-chip {
-        flex-shrink: 0;
-    }
-}
-
 /* Filters and Search */
 .filters-container {
     display: flex;
@@ -288,11 +211,6 @@ header {
     color: var(--text-secondary);
 }
 
-.services-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
 .services-table th, .services-table td {
     padding: 12px 20px;
     text-align: left;
@@ -331,13 +249,131 @@ header {
     color: var(--text-secondary);
 }
 
-@media (max-width: 768px) {
-    aside {
-        width: 0;
-        overflow: hidden;
+/* Table Responsiveness */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.services-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Ensure table doesn't squash too much */
+}
+
+/* Tablets and Laptops */
+@media (max-width: 1200px) {
+    main {
+        padding: 30px;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Small Tablets / Mobile Landscape */
+@media (max-width: 992px) {
+    :root {
+        --sidebar-width: 80px;
+    }
+    .nav-item span, .logo span {
+        display: none;
+    }
+    .nav-item {
+        justify-content: center;
+        padding: 15px;
+    }
+    .logo {
+        justify-content: center;
     }
     main {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+    :root {
+        --sidebar-width: 260px;
+    }
+    
+    aside {
+        transform: translateX(-100%);
+        width: var(--sidebar-width);
+        transition: transform 0.3s ease;
+    }
+
+    aside.active {
+        transform: translateX(0);
+    }
+
+    main {
         margin-left: 0;
+        width: 100%;
         padding: 15px;
+        padding-top: 80px;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: var(--sidebar-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        cursor: pointer;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-color);
+        padding: 15px;
+        z-index: 900;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 0;
+    }
+
+    .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .search-box {
+        min-width: 100%;
+    }
+
+    .filter-chips {
+        overflow-x: auto;
+        padding-bottom: 5px;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-chip {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .project-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .status-badge {
+        align-self: flex-start;
     }
 }
