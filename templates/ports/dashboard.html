@@ -3,95 +3,97 @@
 {% block title %}Dashboard - Port Control{% endblock %}
 
 {% block content %}
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-label">Total de Projetos</div>
-        <div class="stat-value">{{ total_projects }}</div>
+<div class="container">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total de Projetos</div>
+            <div class="stat-value">{{ total_projects }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Serviços Ativos</div>
+            <div class="stat-value">{{ total_services }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Uptime Global</div>
+            <div class="stat-value" style="color: var(--success-color)">100%</div>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-label">Serviços Ativos</div>
-        <div class="stat-value">{{ total_services }}</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">Uptime Global</div>
-        <div class="stat-value" style="color: var(--success-color)">100%</div>
-    </div>
-</div>
 
-<div class="filters-container">
-    <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Buscar por projeto ou porta...">
+    <div class="filters-container">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Buscar por projeto ou porta...">
+        </div>
+        <div class="filter-chips">
+            <button class="filter-chip active" data-filter="all">Todos</button>
+            <button class="filter-chip" data-filter="web"><i class="fas fa-globe"></i> Web</button>
+            <button class="filter-chip" data-filter="db"><i class="fas fa-database"></i> DB</button>
+            <button class="filter-chip" data-filter="cache"><i class="fas fa-bolt"></i> Cache</button>
+            <button class="filter-chip" data-filter="celery"><i class="fas fa-clock"></i> Celery</button>
+        </div>
     </div>
-    <div class="filter-chips">
-        <button class="filter-chip active" data-filter="all">Todos</button>
-        <button class="filter-chip" data-filter="web"><i class="fas fa-globe"></i> Web</button>
-        <button class="filter-chip" data-filter="db"><i class="fas fa-database"></i> DB</button>
-        <button class="filter-chip" data-filter="cache"><i class="fas fa-bolt"></i> Cache</button>
-        <button class="filter-chip" data-filter="celery"><i class="fas fa-clock"></i> Celery</button>
-    </div>
-</div>
 
-<div class="project-list" id="projectList">
-    {% for project in projects %}
-    <div class="project-card" data-name="{{ project.name|lower }}">
-        <div class="project-header">
-            <div>
-                <span class="project-title">{{ project.name }}</span>
-                {% if project.domain %}
-                <span class="project-domain"> &bull; {{ project.domain }}</span>
-                {% endif %}
+    <div class="project-list" id="projectList">
+        {% for project in projects %}
+        <div class="project-card" data-name="{{ project.name|lower }}">
+            <div class="project-header">
+                <div>
+                    <span class="project-title">{{ project.name }}</span>
+                    {% if project.domain %}
+                    <span class="project-domain"> &bull; {{ project.domain }}</span>
+                    {% endif %}
+                </div>
+                <span class="status-badge">ONLINE</span>
             </div>
-            <span class="status-badge">ONLINE</span>
+            <div class="project-body">
+                <table class="services-table">
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Tipo</th>
+                            <th>Host (Externa)</th>
+                            <th>Container (Interna)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in project.services.all %}
+                        <tr class="service-row" data-type="{{ service.service_type }}" data-port="{{ service.external_port }}">
+                            <td style="font-weight: 600;">{{ service.name }}</td>
+                            <td>
+                                <span class="type-icon">
+                                    {% if service.service_type == 'web' %}
+                                    <i class="fas fa-globe"></i>
+                                    {% elif service.service_type == 'db' %}
+                                    <i class="fas fa-database"></i>
+                                    {% elif service.service_type == 'cache' %}
+                                    <i class="fas fa-bolt"></i>
+                                    {% elif service.service_type == 'celery' %}
+                                    <i class="fas fa-tasks"></i>
+                                    {% else %}
+                                    <i class="fas fa-cube"></i>
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td><span class="port-tag">{{ service.external_port }}</span></td>
+                            <td><span class="port-tag" style="background: rgba(255,255,255,0.05); color: var(--text-secondary)">{{ service.internal_port }}</span></td>
+                            <td><i class="fas fa-check-circle" style="color: var(--success-color)"></i></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-secondary);">Nenhum serviço cadastrado.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="project-body">
-            <table class="services-table">
-                <thead>
-                    <tr>
-                        <th>Serviço</th>
-                        <th>Tipo</th>
-                        <th>Host (Externa)</th>
-                        <th>Container (Interna)</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for service in project.services.all %}
-                    <tr class="service-row" data-type="{{ service.service_type }}" data-port="{{ service.external_port }}">
-                        <td style="font-weight: 600;">{{ service.name }}</td>
-                        <td>
-                            <span class="type-icon">
-                                {% if service.service_type == 'web' %}
-                                <i class="fas fa-globe"></i>
-                                {% elif service.service_type == 'db' %}
-                                <i class="fas fa-database"></i>
-                                {% elif service.service_type == 'cache' %}
-                                <i class="fas fa-bolt"></i>
-                                {% elif service.service_type == 'celery' %}
-                                <i class="fas fa-tasks"></i>
-                                {% else %}
-                                <i class="fas fa-cube"></i>
-                                {% endif %}
-                            </span>
-                        </td>
-                        <td><span class="port-tag">{{ service.external_port }}</span></td>
-                        <td><span class="port-tag" style="background: rgba(255,255,255,0.05); color: var(--text-secondary)">{{ service.internal_port }}</span></td>
-                        <td><i class="fas fa-check-circle" style="color: var(--success-color)"></i></td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" style="text-align: center; color: var(--text-secondary);">Nenhum serviço cadastrado.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        {% empty %}
+        <div style="text-align: center; padding: 50px; background: var(--sidebar-bg); border-radius: 12px; border: 1px dashed var(--border-color);">
+            <i class="fas fa-plus-circle" style="font-size: 3rem; color: var(--border-color); margin-bottom: 20px;"></i>
+            <p>Nenhum projeto encontrado. Comece adicionando um no admin.</p>
         </div>
+        {% endfor %}
     </div>
-    {% empty %}
-    <div style="text-align: center; padding: 50px; background: var(--sidebar-bg); border-radius: 12px; border: 1px dashed var(--border-color);">
-        <i class="fas fa-plus-circle" style="font-size: 3rem; color: var(--border-color); margin-bottom: 20px;"></i>
-        <p>Nenhum projeto encontrado. Comece adicionando um no admin.</p>
-    </div>
-    {% endfor %}
 </div>
 {% endblock %}
