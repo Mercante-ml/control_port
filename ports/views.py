@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch
 from .models import Project, Service
 
+@login_required
 def dashboard(request):
     projects = Project.objects.prefetch_related(
         Prefetch('services', queryset=Service.objects.order_by('external_port'))

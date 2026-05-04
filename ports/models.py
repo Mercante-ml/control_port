@@ -21,6 +21,7 @@ class Service(models.Model):
         ('web', 'Web (Django/Frontend)'),
         ('db', 'Database (PostgreSQL/MySQL)'),
         ('cache', 'Cache (Redis/Memcached)'),
+        ('celery', 'Worker (Celery/Tasks)'),
         ('proxy', 'Proxy (Nginx/Traefik)'),
         ('other', 'Outro'),
     ]
